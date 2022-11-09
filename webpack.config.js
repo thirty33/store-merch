@@ -15,7 +15,8 @@ module.exports = {
     filename: '[name].[contenthash].js',
     // publicPath: '/',
   },
-  mode: 'production',
+  // mode: 'production',
+  mode: 'development',
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
@@ -84,21 +85,21 @@ module.exports = {
     new Dotenv(),
     new CleanWebpackPlugin()
   ],
-  optimization: {
-    minimize: true,
-    minimizer: [
-      new CssMinimizerPlugin(),
-      new TerserPlugin()
-    ]
-  }
-  // devServer: {
-  //   static: {
-  //     directory: path.join(__dirname, 'dist'),
-  //   },
-  //   compress: true,
-  //   port: 9000,
-  //   historyApiFallback: true,
-  //   watchFiles: path.join(__dirname, './**'),
-  //   open: true,
+  // optimization: {
+  //   minimize: true,
+  //   minimizer: [
+  //     new CssMinimizerPlugin(),
+  //     new TerserPlugin()
+  //   ]
   // },
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'dist'),
+    },
+    compress: true,
+    port: 9000,
+    historyApiFallback: true,
+    watchFiles: path.join(__dirname, './**'),
+    open: true,
+  },
 };
