@@ -2,20 +2,20 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 // // const CopyPlugin = require('copy-webpack-plugin')
-// const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
-// const TerserPlugin = require('terser-webpack-plugin')
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
+const TerserPlugin = require('terser-webpack-plugin')
 
 const Dotenv = require('dotenv-webpack')
-// const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
   entry: './src/index.js', //entry point
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/',
+    filename: '[name].[contenthash].js',
+    // publicPath: '/',
   },
-  mode: 'development',
+  mode: 'production',
   resolve: {
     extensions: ['.js', '.jsx'],
     alias: {
@@ -38,16 +38,16 @@ module.exports = {
       {
         // test: /\.scss/,
         test: /\.(css|scss)$/,
-        use: ['style-loader', 'css-loader', 'sass-loader'],
-        // use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        // use: ['style-loader', 'css-loader', 'sass-loader'],
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
       },
-      // {
-      //     test: /\.png/,
-      //     type: 'asset/resource',
-      //     generator: {
-      //         filename: "assets/images/[hash][ext][query]",
-      //     },
-      // },
+      {
+        test: /\.(png|svg|jpg|gif)$/,
+        type: 'asset/resource',
+        generator: {
+          filename: "assets/images/[hash][ext][query]",
+        },
+      },
       // {
       //     test: /\.(woff|woff2|eot|ttf|otf)$/i,
       //     type: "asset/resource",
@@ -55,13 +55,13 @@ module.exports = {
       //         filename: "assets/fonts/[hash][ext][query]",
       //     },
       // },
-      {
-        test: /\.(png|svg|jpg|gif)$/,
-        type: 'asset',
-        // generator: {
-        //     filename: "assets/[hash][ext][query]",
-        // },
-      },
+      // {
+      //   test: /\.(png|svg|jpg|gif)$/,
+      //   type: 'asset',
+      //   // generator: {
+      //   //     filename: "assets/[hash][ext][query]",
+      //   // },
+      // },
       {
         test: /\.html$/,
         use: [
@@ -82,23 +82,23 @@ module.exports = {
       filename: 'assets/[name].css',
     }),
     new Dotenv(),
-    // new CleanWebpackPlugin()
+    new CleanWebpackPlugin()
   ],
-  // optimization: {
-  //     minimize: true,
-  //     minimizer: [
-  //         new CssMinimizerPlugin(),
-  //         new TerserPlugin()
-  //     ]
-  // }
-  devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'),
-    },
-    compress: true,
-    port: 9000,
-    historyApiFallback: true,
-    watchFiles: path.join(__dirname, './**'),
-    open: true,
-  },
+  optimization: {
+    minimize: true,
+    minimizer: [
+      new CssMinimizerPlugin(),
+      new TerserPlugin()
+    ]
+  }
+  // devServer: {
+  //   static: {
+  //     directory: path.join(__dirname, 'dist'),
+  //   },
+  //   compress: true,
+  //   port: 9000,
+  //   historyApiFallback: true,
+  //   watchFiles: path.join(__dirname, './**'),
+  //   open: true,
+  // },
 };
